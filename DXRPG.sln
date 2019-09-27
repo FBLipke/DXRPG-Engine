@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXRPG.Engine", "DXRPG.Engine\DXRPG.Engine.vcxproj", "{E318BA54-D0FD-4B95-9059-F0E40C1C76FD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Include", "Include", "{D28DD059-4084-4E27-89BD-7B953BF3411D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

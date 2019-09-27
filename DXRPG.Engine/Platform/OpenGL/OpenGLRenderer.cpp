@@ -43,99 +43,101 @@ namespace DXRPG
 					return OutErrorMsg("Failed to create and activate RENDER context!");
 
 				glewExperimental = 1;
-				glewInit();
 
-				if (wglewIsSupported("WGL_ARB_create_context") == 1)
+				if (glewInit() != GLEW_OK)
 				{
+					OutErrorMsg("Failed to initialize GLEW!");
+					return false;
+				}
+
+				{
+					typedef HGLRC(WINAPI * PFNWGLCREATECONTEXTATTRIBSARBPROC)
+						(HDC hDC, HGLRC hShareContext, const int* attribList);
+
+					PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
+						(PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+
+					if (wglCreateContextAttribsARB != NULL)
 					{
-						typedef HGLRC(WINAPI * PFNWGLCREATECONTEXTATTRIBSARBPROC)
-							(HDC hDC, HGLRC hShareContext, const int* attribList);
-
-						PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
-							(PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-						
-						if (wglCreateContextAttribsARB != NULL)
+						GLint attribs[] =
 						{
-							GLint attribs[] =
-							{
-								WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-								WGL_CONTEXT_MINOR_VERSION_ARB, 3,
-								WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-								0
-							};
+							WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+							WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+							WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+							0
+						};
 
-							this->RenderContext = wglCreateContextAttribsARB(this->deviceContext, 0, attribs);
-							wglDeleteContext(tmpRC);
+						this->RenderContext = wglCreateContextAttribsARB(this->deviceContext, 0, attribs);
+						wglDeleteContext(tmpRC);
 
-							if (!(this->RenderContext && wglMakeCurrent(this->deviceContext, this->RenderContext)))
-							{
-								OutErrorMsg("Failed to Create OpenGL render context!");
-								return false;
-							}
-						}
-						else
+						if (!(this->RenderContext && wglMakeCurrent(this->deviceContext, this->RenderContext)))
 						{
-							OutErrorMsg("Failed to Create OpenGL Context!");
+							OutErrorMsg("Failed to Create OpenGL render context!");
 							return false;
 						}
 					}
+					else
+					{
+						OutErrorMsg("Failed to Create the OpenGL 3.3 Context!\nThe System does not support OpenGL 3.3!");
+						return false;
+					}
 				}
-				
-				this->SetViewport(0, 0, window.Get_FrameBufferWidth(), window.Get_FrameBufferHeight());
 
-				this->EnableBlend();
-				this->SetClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+			this->SetViewport(0, 0, window.Get_FrameBufferWidth(), window.Get_FrameBufferHeight());
 
-				return true;
-			}
+			this->EnableBlend();
+			this->SetClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 
-			void OpenGLRenderer::SetClearColor(const float& r, const float& g, const float& b, const float& a)
-			{
-				glClearColor(r, g, b, a);
-			}
+			return true;
+		}
 
-			void OpenGLRenderer::Clear()
-			{
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-			}
+		void OpenGLRenderer::SetClearColor(const float& r, const float& g, const float& b, const float& a)
+		{
+			glClearColor(r, g, b, a);
+		}
 
-			void OpenGLRenderer::SwapBuffer()
-			{
-				SwapBuffers(this->deviceContext);
-			}
+		void OpenGLRenderer::Clear()
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		}
 
-			void OpenGLRenderer::Begin_Render()
-			{
-				this->Clear();
-			}
+		void OpenGLRenderer::SwapBuffer()
+		{
+			SwapBuffers(this->deviceContext);
+		}
 
-			void OpenGLRenderer::Render()
-			{
-			}
+		void OpenGLRenderer::Begin_Render()
+		{
+			this->Clear();
+		}
 
-			void OpenGLRenderer::End_Render()
-			{
-				this->SwapBuffer();
-			}
+		void OpenGLRenderer::Render()
+		{
+		}
 
-			void OpenGLRenderer::Shutdown(const HWND& hwnd)
-			{
-				wglMakeCurrent(NULL, NULL);
-				wglDeleteContext(this->RenderContext);
-				ReleaseDC(hwnd, this->deviceContext);
-			}
+		void OpenGLRenderer::End_Render()
+		{
+			this->SwapBuffer();
+		}
 
-			void OpenGLRenderer::EnableBlend()
-			{
-				glEnable(GL_BLEND);
-				glBlendFunc(GL_SOURCE0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			}
+		void OpenGLRenderer::Shutdown(const HWND& hwnd)
+		{
+			wglMakeCurrent(NULL, NULL);
+			wglDeleteContext(this->RenderContext);
+			ReleaseDC(hwnd, this->deviceContext);
+		}
 
-			void OpenGLRenderer::SetViewport(const float & x, const float & y,
-				const float& width, const float& height)
-			{
-				glViewport((int)x, (int)y, (int)width, (int)height);
-			}
+		void OpenGLRenderer::EnableBlend()
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SOURCE0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
+		void OpenGLRenderer::SetViewport(const float & x, const float & y,
+			const float& width, const float& height)
+		{
+			glViewport((int)x, (int)y, (int)width, (int)height);
 		}
 	}
+}
 }

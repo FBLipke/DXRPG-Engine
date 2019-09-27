@@ -27,7 +27,10 @@ namespace DXRPG
 
 		bool Common::Inititalize()
 		{
-			if (!window->Inititalize() || !renderer->Initialize(*this->window))
+			if (!window->Inititalize())
+				return false;
+
+			if (!renderer->Initialize(*this->window))
 				return false;
 
 			this->shader = new DXRPG::Engine::Renderer::OpenGLShader();

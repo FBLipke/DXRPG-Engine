@@ -132,14 +132,10 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Window.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Assets\Shader\simple.frag" />
     <None Include="Assets\Shader\simple.vert" />
     <None Include="Assets\Shader\texture.frag" />
     <None Include="Assets\Shader\texture.vert" />
-    <None Include="Window.aps" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Texture\walk_Brendan.png" />
