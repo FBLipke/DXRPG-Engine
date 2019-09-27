@@ -11,11 +11,11 @@ namespace DXRPG
 			{
 			public:
 				VertexArray() {}
-				virtual void AddBuffer(VertexBuffer& buffer, VertexBufferLayout& layout) = 0;
-				VertexArray(const float* vertPositions, int vertCount) {};
+				virtual void AddBuffer(VertexBuffer& vertexBuffer, VertexBufferLayout & layout) = 0;
+				VertexArray(const IndexBuffer* index) {};
 				virtual ~VertexArray() {};
 
-				virtual void Render() = 0;
+				virtual void Bind() = 0;
 			};
 		}
 	}

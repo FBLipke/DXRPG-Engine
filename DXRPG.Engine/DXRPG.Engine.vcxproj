@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Platform\OpenGL\OpenGLIndexBuffer.cpp" />
     <ClCompile Include="Platform\OpenGL\OpenGLVertexBuffer.cpp" />
     <ClCompile Include="Platform\OrthographicCamera.cpp" />
     <ClCompile Include="Platform\OpenGL\OpenGLVertexArray.cpp" />
@@ -106,6 +107,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Platform\Abstract\IndexBuffer.h" />
+    <ClInclude Include="Platform\OpenGL\OpenGLIndexBuffer.h" />
     <ClInclude Include="Platform\OpenGL\OpenGLVertexBuffer.h" />
     <ClInclude Include="Platform\Abstract\VertexArrayLayout.h" />
     <ClInclude Include="Platform\Abstract\VertexBuffer.h" />

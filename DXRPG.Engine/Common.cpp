@@ -31,7 +31,7 @@ namespace DXRPG
 				return false;
 
 			this->shader = new DXRPG::Engine::Renderer::OpenGLShader();
-			this->shader->Compile("Assets/Shader/texture.frag", "Assets/Shader/texture.vert", "");
+			this->shader->Compile("Assets/Shader/simple.frag", "Assets/Shader/simple.vert", "");
 
 			return true;
 		}
@@ -145,21 +145,26 @@ namespace DXRPG
 			float secoundsperCount = 1.0f / countsPerSec;
 
 			float vertices[] = {
-				//	x			y			Z		tex-X	tex-Y
-					 0.5f,		 0.5f,		0.0f,	 1.0f,	 1.0f,
-					 0.5f,		-0.5f,		0.0f,	 1.0f,	 0.0f,
-					-0.5f,		 0.5f,		0.0f,	 0.0f,	 1.0f,
-
-				// second triangle
-					 0.5f,		-0.5f,		0.0f,	 1.0f,	0.0f,	// bottom right
-					-0.5f,		-0.5f,		0.0f,	 0.0f,	0.0f,	// bottom left
-					-0.5f,		 0.5f,		0.0f,	 0.0f,	1.0f	// top left
+				-0.5f, -0.5f, 0.0f,
+				 0.5f, -0.5f, 0.0f,
+				 0.5f,  0.5f, 0.0f,
+				-0.5f,  0.5f, 0.0f
 			};
 
+			auto vb = new DXRPG::Engine::Renderer::OpenGLVertexBuffer();
+			vb->SetData(vertices, 3 * 4 * sizeof(float));
 
-			auto va = new DXRPG::Engine::Renderer::OpenGLVertexArray(vertices, sizeof(vertices));
-			auto tex = new DXRPG::Engine::Renderer::OpenGLTexture("Assets/Texture/walk_Brendan.png");
+			uint32_t indices[] = { 0, 1, 2, 2, 3, 0 };
+			auto ib = new DXRPG::Engine::Renderer::OpenGLIndexBuffer();
+			ib->SetData(indices, sizeof(indices));
 
+			auto vla = new DXRPG::Engine::Renderer::VertexBufferLayout();
+			vla->Push(4, false);
+
+			auto va = new DXRPG::Engine::Renderer::OpenGLVertexArray(ib);
+			va->AddBuffer(*vb, *vla);
+
+			glm::vec4 color = glm::vec4(1.0f);
 
 			while (WM_QUIT != msg.message)
 			{
@@ -179,13 +184,13 @@ namespace DXRPG
 					{
 						this->Update(deltaTime);
 						this->Begin_Render();
-						tex->Bind();
 						shader->Bind();
 						
-						shader->setInt("pTexture", 0);
 						shader->setMat4("proj", camera->Get_ProjectionViewMatrix());
-
-						va->Render();
+						shader->setVec4("color", color);
+						va->Bind();
+						ib->Bind();
+						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 						shader->Unbind();
 
 						this->End_Render();
@@ -197,6 +202,10 @@ namespace DXRPG
 				}
 			}
 			delete va;
+			delete vb;
+			delete ib;
+			delete vla;
+
 			Shutdown();
 		}
 	}

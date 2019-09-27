@@ -13,21 +13,19 @@ namespace DXRPG
 			public:
 				OpenGLVertexArray() {};
 
-				OpenGLVertexArray(const float* vertPositions, int vertCount);
+				OpenGLVertexArray(const IndexBuffer* index);
 				virtual ~OpenGLVertexArray();
 
-				virtual void Render();
-				virtual void AddBuffer(VertexBuffer & buffer, VertexBufferLayout & layout) override;
+				virtual void Bind();
+				virtual void AddBuffer(VertexBuffer& vertexBuffer, VertexBufferLayout & layout) override;
 			private:
-				GLuint mVBO = GL_NONE;
-				GLuint mVAO = GL_NONE;
+				VertexBuffer* vb = nullptr;
+				IndexBuffer* ib = nullptr;
+
+				GLuint mVAO = 0;
 
 				int mVertexCount = 0;
-
-				// Geerbt über VertexArray
-
 			};
-
 		}
 	}
 }

@@ -8,22 +8,42 @@ namespace DXRPG
 		{
 			OpenGLVertexBuffer::OpenGLVertexBuffer()
 			{
+				glGenBuffers(1, &this->id);
+				Bind();
 			}
 
 			OpenGLVertexBuffer::~OpenGLVertexBuffer()
 			{
+				if (this->id != 0)
+				{
+					UnBind();
+					glDeleteBuffers(1, &this->id);
+				}
 			}
 
-			void OpenGLVertexBuffer::SetData(float * data, const int & size)
+			void OpenGLVertexBuffer::SetData(const float * data, const unsigned int & size)
 			{
+				Bind();
+				glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+				UnBind();
 			}
+
+			unsigned int OpenGLVertexBuffer::Get_Id() const { return this->id; }
 
 			void OpenGLVertexBuffer::Bind()
 			{
+				if (this->isBound)
+					return;
+				
+				glBindBuffer(GL_ARRAY_BUFFER, this->id);
 			}
 
 			void OpenGLVertexBuffer::UnBind()
 			{
+				if (!this->isBound)
+					return;
+				
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 		}
 	}

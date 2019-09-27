@@ -7,20 +7,22 @@ namespace DXRPG
 	{
 		namespace Renderer
 		{
-			class __DLLEXPORT OpenGLVertexBuffer :
-				public VertexBuffer
+			class __DLLEXPORT OpenGLIndexBuffer :
+				public IndexBuffer
 			{
 			public:
-				OpenGLVertexBuffer();
-				virtual ~OpenGLVertexBuffer();
+				OpenGLIndexBuffer();
+				virtual ~OpenGLIndexBuffer();
 
-				virtual void SetData(const float * data, const unsigned int & size) override;
+				virtual void SetData(const unsigned int* data, const int& count) override;
 				virtual unsigned int Get_Id() const override;
+				virtual unsigned int Get_Count() const override;
 				virtual void Bind() override;
 				virtual void UnBind() override;
 			private:
 				bool isBound = false;
 				unsigned int id = 0;
+				unsigned int count = 0;
 			};
 		}
 	}

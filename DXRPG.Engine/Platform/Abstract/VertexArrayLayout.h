@@ -29,7 +29,6 @@ namespace DXRPG
 					case GL_UNSIGNED_BYTE:		return 1;
 					case GL_UNSIGNED_INT:		return 4;
 					case GL_BYTE:				return 1;
-					default:					return 0;
 					}
 				}
 			};
@@ -37,18 +36,20 @@ namespace DXRPG
 			class VertexBufferLayout
 			{
 			public:
-				VertexBufferLayout();
-				virtual ~VertexBufferLayout();
+				VertexBufferLayout() {};
+				virtual ~VertexBufferLayout() {
+					elements.clear();
+				};
 
 				template<typename T>
-				inline void Push(int count)
+				inline void Push(unsigned int count)
 				{
 					static_assert(false);
 				}
 
 				inline void Push(unsigned int count, bool normalized)
 				{
-					elements.push_back({ GL_FLOAT, count, normalized });
+					elements.push_back({ GL_FLOAT, count, false });
 					stride += count * VertexElement::Get_SizeOfType(GL_FLOAT);
 				}
 
