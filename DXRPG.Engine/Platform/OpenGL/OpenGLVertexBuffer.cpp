@@ -1,22 +1,18 @@
 #include <Platform/Platform.h>
 
-namespace DXRPG
+namespace DXRPG::Engine::Renderer
 {
-	namespace Engine
-	{
-		namespace Renderer
-		{
 			OpenGLVertexBuffer::OpenGLVertexBuffer()
 			{
 				glGenBuffers(1, &this->id);
-				Bind();
+				OpenGLVertexBuffer::Bind();
 			}
 
 			OpenGLVertexBuffer::~OpenGLVertexBuffer()
 			{
 				if (this->id != 0)
 				{
-					UnBind();
+					OpenGLVertexBuffer::UnBind();
 					glDeleteBuffers(1, &this->id);
 				}
 			}
@@ -45,6 +41,4 @@ namespace DXRPG
 				
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
-		}
-	}
 }

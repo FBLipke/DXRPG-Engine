@@ -1,5 +1,4 @@
 #pragma once
-#include <Platform/Platform.h>
 
 namespace DXRPG
 {
@@ -10,8 +9,8 @@ namespace DXRPG
 			class __DLLEXPORT Camera
 			{
 			public:
-				Camera() {};
-				Camera(Window * w);
+				Camera();
+				explicit Camera(Window * w);
 
 				virtual ~Camera() = default;
 				virtual void Update(Window * w) = 0;
@@ -20,6 +19,10 @@ namespace DXRPG
 
 				virtual void SetPosition(const float& x, const float& y, const float& z) = 0;
 			};
+
+			inline Camera::Camera()
+			{
+			}
 		}
 	}
 }

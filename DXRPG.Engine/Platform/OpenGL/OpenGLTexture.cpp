@@ -1,64 +1,63 @@
 #include <Platform/Platform.h>
 
-namespace DXRPG
+namespace DXRPG::Engine::Renderer
 {
-	namespace Engine
+	OpenGLTexture::OpenGLTexture() : id(0), width(0), height(0), bpp(0)
 	{
-		namespace Renderer
-		{
-			DXRPG::Engine::Renderer::OpenGLTexture::OpenGLTexture(const std::string & path)
-			{
-				this->path = path;
-				stbi_set_flip_vertically_on_load(1);
+	}
 
-				glGenTextures(1, &this->id);
-				glBindTexture(GL_TEXTURE_2D, this->id);
+	OpenGLTexture::OpenGLTexture(const std::string & path)
+	{
+		this->path = path;
+		stbi_set_flip_vertically_on_load(1);
 
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glGenTextures(1, &this->id);
+		glBindTexture(GL_TEXTURE_2D, this->id);
 
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-				localbuffer = stbi_load(this->path.c_str(), &width, &height, &bpp, 4);
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localbuffer);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-				if (localbuffer != nullptr)
-					stbi_image_free(localbuffer);
-				this->localbuffer = nullptr;
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
+		localbuffer = stbi_load(this->path.c_str(), &width, &height, &bpp, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localbuffer);
 
-			OpenGLTexture::~OpenGLTexture()
-			{
-				glDeleteTextures(GL_TEXTURE_2D, &this->id);
-			}
+		if (localbuffer != nullptr)
+			stbi_image_free(localbuffer);
 
-			unsigned int OpenGLTexture::Get_TextureId() const
-			{
-				return this->id;
-			}
+		this->localbuffer = nullptr;
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 
-			void OpenGLTexture::Bind(unsigned int slot) const
-			{
-				glActiveTexture(GL_TEXTURE0 + slot);
-				glBindTexture(GL_TEXTURE_2D, this->id);
-			}
+	OpenGLTexture::~OpenGLTexture()
+	{
+		glDeleteTextures(GL_TEXTURE_2D, &this->id);
+	}
 
-			void OpenGLTexture::Unbind() const
-			{
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
+	unsigned int OpenGLTexture::Get_TextureId() const
+	{
+		return this->id;
+	}
 
-			int OpenGLTexture::Get_Width()
-			{
-				return this->width;
-			}
+	void OpenGLTexture::Bind(unsigned int slot) const
+	{
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, this->id);
+	}
 
-			int OpenGLTexture::Get_Height()
-			{
-				return this->height;
-			}
-		}
+	void OpenGLTexture::Unbind() const
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	int OpenGLTexture::Get_Width() const
+	{
+		return this->width;
+	}
+
+	int OpenGLTexture::Get_Height() const
+	{
+		return this->height;
 	}
 }

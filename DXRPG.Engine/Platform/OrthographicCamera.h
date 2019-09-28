@@ -7,18 +7,17 @@ namespace DXRPG
 	{
 		namespace Renderer
 		{
-			class OrthographicCamera :
+			class OrthographicCamera final :
 				public Camera
 			{
 			public:
-				OrthographicCamera(Window * w);
+				explicit OrthographicCamera(Window * w);
 				virtual ~OrthographicCamera();
 
-				// Geerbt über Camera
-				virtual void Update(Window * w) override;
-				virtual glm::mat4& Get_ProjectionViewMatrix() override;
+				void Update(Window * w) override;
+				glm::mat4& Get_ProjectionViewMatrix() override;
 
-				virtual void SetPosition(const float& x, const float& y, const float& z);
+				void SetPosition(const float& x, const float& y, const float& z) override;
 			private:
 				glm::vec3 position;
 				glm::mat4 proj;

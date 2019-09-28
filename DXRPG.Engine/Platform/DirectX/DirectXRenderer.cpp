@@ -1,11 +1,7 @@
 #include "../Platform.h"
 
-namespace DXRPG
+namespace DXRPG::Engine::Renderer
 {
-	namespace Engine
-	{
-		namespace Renderer
-		{
 			DirectXRenderer::DirectXRenderer()
 			{
 			}
@@ -21,6 +17,7 @@ namespace DXRPG
 
 			void DirectXRenderer::Begin_Render()
 			{
+				
 			}
 			
 			void DirectXRenderer::Render()
@@ -43,6 +40,4 @@ namespace DXRPG
 			void DirectXRenderer::EnableBlend()
 			{
 			}
-		}
-	}
 }

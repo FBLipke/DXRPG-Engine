@@ -7,20 +7,19 @@ namespace DXRPG
 	{
 		namespace Renderer
 		{
-			class __DLLEXPORT OpenGLVertexArray :
+			class __DLLEXPORT OpenGLVertexArray final :
 				public VertexArray
 			{
 			public:
-				OpenGLVertexArray() {};
+				OpenGLVertexArray();
 
 				OpenGLVertexArray(const IndexBuffer* index);
 				virtual ~OpenGLVertexArray();
 
-				virtual void Bind();
-				virtual void AddBuffer(VertexBuffer& vertexBuffer, VertexBufferLayout & layout) override;
+				void Bind() override;
+				void AddBuffer(VertexBuffer& vertexBuffer, VertexBufferLayout & layout) override;
 			private:
 				VertexBuffer* vb = nullptr;
-				IndexBuffer* ib = nullptr;
 
 				GLuint mVAO = 0;
 

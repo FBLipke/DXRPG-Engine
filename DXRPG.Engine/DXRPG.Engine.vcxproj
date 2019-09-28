@@ -91,6 +91,8 @@
   <ItemGroup>
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Platform\Common\World\Map\Layer\Layer.cpp" />
+    <ClCompile Include="Platform\Common\World\Map\Map.cpp" />
     <ClCompile Include="Platform\OpenGL\OpenGLIndexBuffer.cpp" />
     <ClCompile Include="Platform\OpenGL\OpenGLVertexBuffer.cpp" />
     <ClCompile Include="Platform\OrthographicCamera.cpp" />
@@ -103,10 +105,14 @@
     <ClCompile Include="Platform\OpenGL\OpenGLRenderer.cpp" />
     <ClCompile Include="Platform\Platform.cpp" />
     <ClCompile Include="Platform\Window\Window.cpp" />
+    <ClCompile Include="Platform\Common\World\Map\Layer\Tile.cpp" />
     <ClCompile Include="Vendor\stb_image\stb_image.cpp" />
+    <ClCompile Include="Platform\Common\World\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Platform\Common\World\Map\Layer\Layer.h" />
+    <ClInclude Include="Platform\Common\World\Map\Map.h" />
     <ClInclude Include="Platform\Abstract\IndexBuffer.h" />
     <ClInclude Include="Platform\OpenGL\OpenGLIndexBuffer.h" />
     <ClInclude Include="Platform\OpenGL\OpenGLVertexBuffer.h" />
@@ -129,7 +135,9 @@
     <ClInclude Include="Platform\Window\WindowState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Platform\Abstract\Texture.h" />
+    <ClInclude Include="Platform\Common\World\Map\Layer\Tile.h" />
     <ClInclude Include="Vendor\stb_image\stb_image.h" />
+    <ClInclude Include="Platform\Common\World\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\simple.frag" />

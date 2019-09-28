@@ -6,22 +6,22 @@ namespace DXRPG
 	{
 		namespace Renderer
 		{
-			class __DLLEXPORT OpenGLShader :
+			class __DLLEXPORT OpenGLShader final :
 				public Shader
 			{
 			public:
 				OpenGLShader();
 				virtual ~OpenGLShader();
 
-				virtual void Bind();
-				virtual void Unbind();
-				virtual void Compile(const std::string & fragFile, const std::string & vertFile,
-					const std::string & geofile);
+				void Bind() override;
+				void Unbind() override;
+				void Compile(const std::string & fragFile, const std::string & vertFile,
+					const std::string & geofile) override;
 				const unsigned int Get_Id() const;
 
 
 			private:
-				std::unordered_map<std::string, unsigned int> uniformlocations;
+				std::unordered_map<std::string, unsigned int> uniformLocations;
 				bool isBinded = false;
 				void __Compile(const std::string & source, const unsigned int & shader);
 				void Compile_FragmentShader(const std::string & source);
@@ -32,18 +32,18 @@ namespace DXRPG
 				unsigned int id;
 
 				// Geerbt über Shader
-				virtual void setBool(const std::string & name, bool value) override;
-				virtual void setInt(const std::string & name, int value) override;
-				virtual void setFloat(const std::string & name, float value) override;
-				virtual void setVec2(const std::string & name, const glm::vec2 & value) override;
-				virtual void setVec2(const std::string & name, float x, float y) override;
-				virtual void setVec3(const std::string & name, const glm::vec3 & value) override;
-				virtual void setVec3(const std::string & name, float x, float y, float z) override;
-				virtual void setVec4(const std::string & name, const glm::vec4 & value) override;
-				virtual void setVec4(const std::string & name, float x, float y, float z, float w) override;
-				virtual void setMat2(const std::string & name, const glm::mat2 & mat) override;
-				virtual void setMat3(const std::string & name, const glm::mat3 & mat) override;
-				virtual void setMat4(const std::string & name, const glm::mat4 & mat) override;
+				void setBool(const std::string & name, bool value) override;
+				void setInt(const std::string & name, int value) override;
+				void setFloat(const std::string & name, float value) override;
+				void setVec2(const std::string & name, const glm::vec2 & value) override;
+				void setVec2(const std::string & name, float x, float y) override;
+				void setVec3(const std::string & name, const glm::vec3 & value) override;
+				void setVec3(const std::string & name, float x, float y, float z) override;
+				void setVec4(const std::string & name, const glm::vec4 & value) override;
+				void setVec4(const std::string & name, float x, float y, float z, float w) override;
+				void setMat2(const std::string & name, const glm::mat2 & mat) override;
+				void setMat3(const std::string & name, const glm::mat3 & mat) override;
+				void setMat4(const std::string & name, const glm::mat4 & mat) override;
 			};
 		}
 	}

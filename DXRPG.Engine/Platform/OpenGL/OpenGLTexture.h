@@ -1,6 +1,6 @@
+#pragma once
 #include <Platform/Platform.h>
 #include <Vendor/stb_image/stb_image.h>
-#pragma once
 
 namespace DXRPG
 {
@@ -8,19 +8,20 @@ namespace DXRPG
 	{
 		namespace Renderer
 		{
-			class __DLLEXPORT OpenGLTexture
+			class __DLLEXPORT OpenGLTexture final
 			{
 			public:
-				OpenGLTexture() {};
-				OpenGLTexture(const std::string& path);
+				OpenGLTexture();
 
-				virtual ~OpenGLTexture();
+				explicit OpenGLTexture(const std::string& path);
 
-				virtual unsigned int Get_TextureId() const;
-				virtual void Bind(unsigned int slot = 0) const;
-				virtual void Unbind() const;
-				virtual int Get_Width();
-				virtual int Get_Height();
+				~OpenGLTexture();
+
+				unsigned int Get_TextureId() const;
+				void Bind(unsigned int slot = 0) const;
+				void Unbind() const;
+				int Get_Width() const;
+				int Get_Height() const;
 			private:
 				std::string path;
 				unsigned int id;

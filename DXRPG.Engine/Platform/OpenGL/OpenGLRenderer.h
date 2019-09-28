@@ -20,19 +20,19 @@ namespace DXRPG
 				OpenGLRenderer();
 				virtual ~OpenGLRenderer();
 
-				virtual bool Initialize(const Window& window);
+				bool Initialize(const Window& window) override;
 				virtual void SetClearColor(const float & r, const float & g, const float & b, const float & a);
 				virtual void Clear();
 				virtual void SwapBuffer();
-				virtual void Begin_Render();
-				virtual void Render();
-				virtual void End_Render();
-				virtual void Shutdown(const HWND& hwnd);
+				void Begin_Render() override;
+				void Render() override;
+				void End_Render() override;
+				void Shutdown(const HWND& hwnd) override;
 
-				virtual void EnableBlend();
+				void EnableBlend() override;
 
-				virtual void SetViewport(const float& x, const float& y,
-					const float& width, const float& height);
+				void SetViewport(const float& x, const float& y,
+					const float& width, const float& height) override;
 			private:
 				HDC	deviceContext;
 				HGLRC RenderContext;

@@ -14,10 +14,10 @@ namespace DXRPG
 				OpenGLVertexBuffer();
 				virtual ~OpenGLVertexBuffer();
 
-				virtual void SetData(const float * data, const unsigned int & size) override;
-				virtual unsigned int Get_Id() const override;
-				virtual void Bind() override;
-				virtual void UnBind() override;
+				void SetData(const float * data, const unsigned int & size) override;
+				unsigned int Get_Id() const override;
+				void Bind() override;
+				void UnBind() override;
 			private:
 				bool isBound = false;
 				unsigned int id = 0;

@@ -5,35 +5,34 @@ namespace DXRPG
 {
 	namespace Engine
 	{
-		class __DLLEXPORT Common
+		class __DLLEXPORT Common final
 		{
 		public:
-			Common() {};
-			
-			Common(HINSTANCE hInstance);
-			virtual ~Common();
+			Common();
 
-			virtual bool Inititalize();
-			virtual bool Start();
-			virtual bool Event();
-			virtual bool Update(float dt);
+			explicit Common(HINSTANCE hInstance);
+			~Common();
 
-			virtual void Begin_Render();
-			virtual bool Render();
-			virtual void End_Render();
+			bool Inititalize();
+			bool Start();
+			bool Event();
+			bool Update(float dt) const;
 
-			Window* Get_Window() const;
+			void Begin_Render();
+			bool Render();
+			void End_Render();
+
+			auto Get_Window() const -> Window*;
 
 		protected:
 			float fps;
 			Window* window;
-			DXRPG::Engine::Renderer::Camera* camera;
-			DXRPG::Engine::Renderer::Shader* shader = nullptr;
-			DXRPG::Engine::Renderer::Renderer* renderer = nullptr;
-		protected:
+			Renderer::Camera* camera;
+			Renderer::Shader* shader = nullptr;
+			Renderer::Renderer* renderer = nullptr;
 			bool paused;
 			void CalculateFPS(float dt);
-			void Shutdown();
+			void Shutdown() const;
 			void _GameLoop();
 		};
 	}
