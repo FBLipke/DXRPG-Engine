@@ -19,8 +19,10 @@ namespace DXRPG
 				virtual glm::mat4& Get_ProjectionViewMatrix() override;
 
 				virtual void SetPosition(const float& x, const float& y, const float& z);
-			private:
+				virtual glm::vec3* GetPosition();
 				glm::vec3 position;
+			private:
+				
 				glm::mat4 proj;
 				glm::mat4 view;
 				glm::mat4 projView;

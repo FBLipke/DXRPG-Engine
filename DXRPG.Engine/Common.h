@@ -23,11 +23,14 @@ namespace DXRPG
 			virtual void End_Render();
 
 			Window* Get_Window() const;
+			Input* Get_Input();
 
+			DXRPG::Engine::Renderer::OrthographicCamera* Get_Camera();
 		protected:
 			float fps;
 			Window* window;
-			DXRPG::Engine::Renderer::Camera* camera;
+			Input* input;
+			DXRPG::Engine::Renderer::OrthographicCamera* camera;
 			DXRPG::Engine::Renderer::Shader* shader = nullptr;
 			DXRPG::Engine::Renderer::Renderer* renderer = nullptr;
 		protected:

@@ -25,7 +25,7 @@ namespace DXRPG
 			{
 				Bind();
 				glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-				UnBind();
+				
 			}
 
 			unsigned int OpenGLVertexBuffer::Get_Id() const { return this->id; }
@@ -36,6 +36,7 @@ namespace DXRPG
 					return;
 				
 				glBindBuffer(GL_ARRAY_BUFFER, this->id);
+				this->isBound = true;
 			}
 
 			void OpenGLVertexBuffer::UnBind()

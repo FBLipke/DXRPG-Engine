@@ -60,6 +60,9 @@
     <ClCompile Include="Platform\OpenGL\OpenGLIndexBuffer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Platform\Input.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Platform\OpenGL\OpenGLRenderer.h">
@@ -134,12 +137,13 @@
     <ClInclude Include="Platform\OpenGL\OpenGLIndexBuffer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Platform\Input.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\simple.frag" />
     <None Include="Assets\Shader\simple.vert" />
-    <None Include="Assets\Shader\texture.frag" />
-    <None Include="Assets\Shader\texture.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Texture\walk_Brendan.png">

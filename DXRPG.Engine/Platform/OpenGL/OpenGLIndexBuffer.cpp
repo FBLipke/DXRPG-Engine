@@ -22,14 +22,10 @@ namespace DXRPG
 
 			void OpenGLIndexBuffer::SetData(const unsigned int* data, const int& count)
 			{
-				if (data == nullptr)
-					return;
-
 				this->count = count;
 
 				Bind();
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
-				UnBind();
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->count, data, GL_STATIC_DRAW);
 			}
 
 			unsigned int OpenGLIndexBuffer::Get_Id() const { return this->id; }
@@ -41,6 +37,7 @@ namespace DXRPG
 					return;
 
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->id);
+				this->isBound = true;
 			}
 
 			void OpenGLIndexBuffer::UnBind()

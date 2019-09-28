@@ -23,6 +23,7 @@ namespace DXRPG
 			HWND GetHWND() const;
 		private:
 			void __GetWindowSize();
+			void __GetKeyboardInput(int key);
 			HINSTANCE hInstance;
 			DWORD windowStyle;
 			WindowState Windowstate;
@@ -31,7 +32,6 @@ namespace DXRPG
 			RECT r;
 			LONG width;
 			LONG height;
-
 			LONG fbWidth;
 			LONG fbHeight;
 

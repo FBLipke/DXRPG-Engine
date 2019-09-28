@@ -25,50 +25,74 @@ namespace DXRPG
 			}
 		}
 
+		void Window::__GetKeyboardInput(int key)
+		{
+			if (this == nullptr)
+				return;
+
+			RECT wRect = { 0 };
+		}
+
 		LRESULT Window::MsgProc(HWND& hwnd, UINT& msg, WPARAM& wParam, LPARAM& lParam)
 		{
-			PAINTSTRUCT ps = { 0 };
-			HDC hdc = { 0 };
-
-			Window* cm = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+			Common* cm = reinterpret_cast<Common*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 			switch (msg)
 			{
 			case WM_SIZING:
 				__GetWindowSize();
-				cm->SetWindowState(ResizeEnd);
+				cm->Get_Window()->SetWindowState(ResizeEnd);
+				cm->Event();
 				return 1;
 			case WM_ENTERSIZEMOVE:
-				cm->SetWindowState(ResizeBegin);
+				cm->Get_Window()->SetWindowState(ResizeBegin);
+				cm->Event();
 				return 1;
 			case WM_EXITSIZEMOVE:
 				__GetWindowSize();
-				cm->SetWindowState(ResizeEnd);
+				cm->Get_Window()->SetWindowState(ResizeEnd);
+				cm->Event();
+				return 1;
+			case WM_KEYDOWN:
+				if (cm == nullptr)
+					return 1;
+				cm->Get_Input()->Set_PressedKey(wParam);
+				cm->Get_Window()->SetWindowState(KeyPressed);
+				cm->Event();
+				return 1;
+			case WM_KEYUP:
+				if (cm == nullptr)
+					return 1;
+
+				cm->Get_Input()->Set_ReleasedKey(wParam);
+				cm->Get_Window()->SetWindowState(keyReleased);
+				cm->Event();
 				return 1;
 			case WM_SIZE:
 				switch (wParam)
 				{
 				case SIZE_MAXIMIZED:
 					__GetWindowSize();
-					cm->SetWindowState(Maximized);
+					cm->Get_Window()->SetWindowState(Maximized);
 					return 1;
 				case SIZE_MINIMIZED:
 					__GetWindowSize();
-					cm->SetWindowState(Minimized);
+					cm->Get_Window()->SetWindowState(Minimized);
 					return 1;
 				case SIZE_RESTORED:
 					__GetWindowSize();
-					cm->SetWindowState(Restored);
+					cm->Get_Window()->SetWindowState(Restored);
 					return 1;
 				default:
 					__GetWindowSize();
-					cm->SetWindowState(ResizeEnd);
+					cm->Get_Window()->SetWindowState(ResizeEnd);
 
 					return 1;
 				}
+				cm->Event();
 				return 1;
 			case WM_DESTROY:
 				PostQuitMessage(0);
-				cm->SetWindowState(NoState);
+				cm->Get_Window()->SetWindowState(NoState);
 				return 1;
 
 			default:
@@ -88,6 +112,9 @@ namespace DXRPG
 
 		void Window::SetWindowState(const WindowState& state)
 		{
+			if (this == nullptr)
+				return;
+
 			this->Windowstate = state;
 		}
 
@@ -108,7 +135,6 @@ namespace DXRPG
 
 		Window::Window(HINSTANCE hInstance, const std::string& title)
 		{
-
 			this->hInstance = hInstance;
 			this->title = title;
 			this->hwnd = nullptr;
@@ -126,8 +152,8 @@ namespace DXRPG
 		bool Window::Inititalize()
 		{
 			ZeroMemory(&wcEx, sizeof(WNDCLASSEX));
-			wcEx.cbClsExtra = sizeof(Window);
-			wcEx.cbWndExtra = sizeof(Window);
+			wcEx.cbClsExtra = sizeof(Common);
+			wcEx.cbWndExtra = sizeof(Common);
 			wcEx.cbSize = sizeof(WNDCLASSEX);
 			wcEx.style = CS_HREDRAW | CS_VREDRAW;
 			wcEx.hInstance = this->hInstance;
@@ -156,7 +182,7 @@ namespace DXRPG
 
 				if (!hwnd) return OutErrorMsg("Failed to create Window");
 
-				SetWindowLongPtr(this->hwnd, GWLP_USERDATA, (long long)this);
+				//
 
 				return true;
 			}

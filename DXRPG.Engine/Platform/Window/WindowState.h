@@ -8,6 +8,8 @@ typedef enum __DLLEXPORT WindowState
 	PaintBegin,
 	PaintEnded,
 	ResizeBegin,
+	KeyPressed,
+	keyReleased,
 	Resizing,
 	ResizeEnd
 } WindowState;

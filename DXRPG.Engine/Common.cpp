@@ -9,8 +9,11 @@ namespace DXRPG
 		{
 			this->fps = 0.0f;
 			this->window = new Window(hInstance, "Renderer Window");
+			this->input = new Input();
+
 			this->renderer = new DXRPG::Engine::Renderer::OpenGLRenderer();
 			this->camera = new DXRPG::Engine::Renderer::OrthographicCamera(this->window);
+
 		}
 
 		Common::~Common()
@@ -20,6 +23,9 @@ namespace DXRPG
 
 			delete this->shader;
 			this->shader = nullptr;
+
+			delete this->input;
+			this->input = nullptr;
 
 			delete this->camera;
 			this->camera = nullptr;
@@ -32,6 +38,8 @@ namespace DXRPG
 
 			if (!renderer->Initialize(*this->window))
 				return false;
+
+			SetWindowLongPtr(this->Get_Window()->GetHWND(), GWLP_USERDATA, (long long)this);
 
 			this->shader = new DXRPG::Engine::Renderer::OpenGLShader();
 			this->shader->Compile("Assets/Shader/simple.frag", "Assets/Shader/simple.vert", "");
@@ -61,8 +69,6 @@ namespace DXRPG
 				break;
 			case Restored:
 				break;
-			case NoState:
-				return true;
 			case PaintBegin:
 				break;
 			case PaintEnded:
@@ -76,6 +82,24 @@ namespace DXRPG
 				this->renderer->SetViewport(0, 0,
 					window->Get_FrameBufferWidth(),
 					window->Get_FrameBufferHeight());
+				break;
+			case KeyPressed:
+				switch (input->Get_PressedKey())
+				{
+				case 87:
+					camera->position.x += 1.5f * 2.5f;
+					break;
+				case 83:
+					camera->position.x -= 2.5f;
+					break;
+				default:
+					break;
+				}
+				camera->Update(this->Get_Window());
+				break;
+
+			case keyReleased:
+				input->Set_ReleasedKey(input->Get_PressedKey());
 				break;
 			default:
 				break;
@@ -92,7 +116,6 @@ namespace DXRPG
 
 		void Common::Begin_Render()
 		{
-			this->shader->Bind();
 			renderer->Begin_Render();
 		}
 
@@ -105,13 +128,22 @@ namespace DXRPG
 
 		void Common::End_Render()
 		{
-			this->shader->Unbind();
 			renderer->End_Render();
 		}
 
 		Window* Common::Get_Window() const
 		{
 			return this->window;
+		}
+
+		Input * Common::Get_Input()
+		{
+			return this->input;
+		}
+
+		DXRPG::Engine::Renderer::OrthographicCamera * Common::Get_Camera()
+		{
+			return this->camera;
 		}
 
 		void Common::CalculateFPS(float dt)
@@ -155,19 +187,24 @@ namespace DXRPG
 			};
 
 			auto vb = new DXRPG::Engine::Renderer::OpenGLVertexBuffer();
-			vb->SetData(vertices, 3 * 4 * sizeof(float));
+			vb->SetData(vertices, sizeof(vertices));
 
 			uint32_t indices[] = { 0, 1, 2, 2, 3, 0 };
 			auto ib = new DXRPG::Engine::Renderer::OpenGLIndexBuffer();
 			ib->SetData(indices, sizeof(indices));
 
 			auto vla = new DXRPG::Engine::Renderer::VertexBufferLayout();
-			vla->Push(4, false);
+
+
+			// x,x,x = 3 <--- this (the colum count) must be passed!
+			// x,x,x = 3
+
+			vla->Push(3, false);
 
 			auto va = new DXRPG::Engine::Renderer::OpenGLVertexArray(ib);
 			va->AddBuffer(*vb, *vla);
 
-			glm::vec4 color = glm::vec4(1.0f);
+			glm::vec4 color = glm::vec4(camera->GetPosition()->x, camera->GetPosition()->y, camera->GetPosition()->z, 1.0f);
 
 			while (WM_QUIT != msg.message)
 			{
@@ -186,14 +223,16 @@ namespace DXRPG
 					if (!paused)
 					{
 						this->Update(deltaTime);
-						this->Begin_Render();
 						shader->Bind();
-						
 						shader->setMat4("proj", camera->Get_ProjectionViewMatrix());
 						shader->setVec4("color", color);
 						va->Bind();
 						ib->Bind();
-						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+						this->Begin_Render();
+
+
+						glDrawElements(GL_TRIANGLES, ib->Get_Count(), GL_UNSIGNED_INT, indices);
 						shader->Unbind();
 
 						this->End_Render();
@@ -204,6 +243,7 @@ namespace DXRPG
 					prevTIme = curTIme;
 				}
 			}
+
 			delete va;
 			delete vb;
 			delete ib;

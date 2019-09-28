@@ -29,14 +29,17 @@ namespace DXRPG
 				vb->Bind();
 				
 				unsigned int offset = 0;
+				auto elements = layout.Get_Elements();
 
-				for (unsigned int i = 0; i < layout.Get_Elements().size(); i++)
+
+				for (unsigned int i = 0; i < elements.size(); i++)
 				{
-					glEnableVertexAttribArray(i);
-					glVertexAttribPointer(i, layout.Get_Elements()[i].Count, layout.Get_Elements()[i].Type,
-						layout.Get_Elements()[i].Normalized, layout.Get_Stride(), (const void*)offset);
+					glVertexAttribPointer(i, elements[i].Count, elements[i].Type,
+						elements[i].Normalized, layout.Get_Stride(), (const void*)offset);
 
-					offset += layout.Get_Elements()[i].Count * layout.Get_Elements()[i].Get_SizeOfType(layout.Get_Elements()[i].Type);
+					glEnableVertexAttribArray(i);
+
+					offset += elements[i].Count * elements[i].Get_SizeOfType(elements[i].Type);
 				}
 			}
 		}
