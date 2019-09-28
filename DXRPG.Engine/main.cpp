@@ -5,7 +5,7 @@ namespace DXRPG
 	int DXRPG_main(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 	{
 		{
-			Engine::Common* engine = new Engine::Common(hInstance);
+			auto engine = new Engine::Common(hInstance);
 
 			if (engine->Inititalize())
 				engine->Start();

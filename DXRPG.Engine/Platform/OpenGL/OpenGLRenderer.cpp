@@ -1,11 +1,7 @@
 #include "../Platform.h"
 
-namespace DXRPG
+namespace DXRPG::Engine::Renderer
 {
-	namespace Engine
-	{
-		namespace Renderer
-		{
 
 
 			OpenGLRenderer::OpenGLRenderer()
@@ -20,7 +16,7 @@ namespace DXRPG
 
 			bool OpenGLRenderer::Initialize(const Window& window)
 			{
-				this->deviceContext = GetDC(window.GetHWND());
+				this->deviceContext = GetDC(window.GetHwnd());
 
 				{
 					PIXELFORMATDESCRIPTOR pfd;
@@ -38,7 +34,7 @@ namespace DXRPG
 						return OutErrorMsg("Failed to set Pixelformat!");
 				}
 
-				HGLRC tmpRC = wglCreateContext(this->deviceContext);
+				const HGLRC tmpRC = wglCreateContext(this->deviceContext);
 				if (!wglMakeCurrent(this->deviceContext, tmpRC))
 					return OutErrorMsg("Failed to create and activate RENDER context!");
 
@@ -52,14 +48,14 @@ namespace DXRPG
 
 				{
 					typedef HGLRC(WINAPI * PFNWGLCREATECONTEXTATTRIBSARBPROC)
-						(HDC hDC, HGLRC hShareContext, const int* attribList);
+						(HDC hDC, HGLRC hShareContext, const int* attributeList);
 
-					PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
-						(PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+					const auto wglCreateContextAttribsARB =
+						reinterpret_cast<PFNWGLCREATECONTEXTATTRIBSARBPROC>(wglGetProcAddress("wglCreateContextAttribsARB"));
 
-					if (wglCreateContextAttribsARB != NULL)
+					if (wglCreateContextAttribsARB != nullptr)
 					{
-						GLint attribs[] =
+						GLint attributes[] =
 						{
 							WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 							WGL_CONTEXT_MINOR_VERSION_ARB, 3,
@@ -67,7 +63,7 @@ namespace DXRPG
 							0
 						};
 
-						this->RenderContext = wglCreateContextAttribsARB(this->deviceContext, 0, attribs);
+						this->RenderContext = wglCreateContextAttribsARB(this->deviceContext, nullptr, attributes);
 						wglDeleteContext(tmpRC);
 
 						if (!(this->RenderContext && wglMakeCurrent(this->deviceContext, this->RenderContext)))
@@ -122,7 +118,7 @@ namespace DXRPG
 
 		void OpenGLRenderer::Shutdown(const HWND& hwnd)
 		{
-			wglMakeCurrent(NULL, NULL);
+			wglMakeCurrent(nullptr, nullptr);
 			wglDeleteContext(this->RenderContext);
 			ReleaseDC(hwnd, this->deviceContext);
 		}
@@ -136,8 +132,7 @@ namespace DXRPG
 		void OpenGLRenderer::SetViewport(const float & x, const float & y,
 			const float& width, const float& height)
 		{
-			glViewport((int)x, (int)y, (int)width, (int)height);
+			glViewport(static_cast<int>(x), static_cast<int>(y),
+				static_cast<int>(width), static_cast<int>(height));
 		}
-	}
-}
 }

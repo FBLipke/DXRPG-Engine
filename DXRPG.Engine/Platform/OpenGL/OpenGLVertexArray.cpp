@@ -1,12 +1,11 @@
 #include <Platform/Platform.h>
 
-namespace DXRPG
+namespace DXRPG::Engine::Renderer
 {
-	namespace Engine
-	{
-		namespace Renderer
-		{
-			OpenGLVertexArray::OpenGLVertexArray(const IndexBuffer* index)
+	OpenGLVertexArray::OpenGLVertexArray()
+	= default;
+
+	OpenGLVertexArray::OpenGLVertexArray(const IndexBuffer* index)
 			{
 				glGenVertexArrays(1, &mVAO);
 			}
@@ -38,10 +37,13 @@ namespace DXRPG
 						elements[i].Normalized, layout.Get_Stride(), (const void*)offset);
 
 					glEnableVertexAttribArray(i);
+<<<<<<< HEAD
+=======
+					glVertexAttribPointer(i, layout.Get_Elements()[i].Count, layout.Get_Elements()[i].Type,
+						layout.Get_Elements()[i].Normalized, layout.Get_Stride(), reinterpret_cast<const void*>(offset));
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 
 					offset += elements[i].Count * elements[i].Get_SizeOfType(elements[i].Type);
 				}
 			}
-		}
-	}
 }

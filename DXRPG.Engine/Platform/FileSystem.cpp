@@ -1,9 +1,7 @@
 #include <Platform/Platform.h>
 
-namespace DXRPG
+namespace DXRPG::Engine
 {
-	namespace Engine
-	{
 		FileSystem::FileSystem()
 		{
 		}
@@ -41,22 +39,22 @@ namespace DXRPG
 		{
 			std::string _path = p1;
 
-			if (p1.size() == 0)
+			if (p1.empty())
 				return p2;
 
 			if (!__has_endingslash(_path))
 				_path = _path + __pathSeperatorChar();
 
-			if (p2.size() != 0)
+			if (!p2.empty())
 				return _path + p2;
 			else
 				return _path;
 		}
 
-		const std::string FileSystem::ReadText(const std::string & path)
+		std::string FileSystem::ReadText(const std::string& path)
 		{
 			std::ifstream file;
-			std::string _wd = Get_WorkingDirectory();
+			const auto _wd = Get_WorkingDirectory();
 			file.open(Combine(_wd, path).c_str());
 
 			if (!file.bad())
@@ -69,5 +67,4 @@ namespace DXRPG
 			}
 			return "";
 		}
-	}
 }

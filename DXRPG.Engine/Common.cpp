@@ -1,19 +1,26 @@
 #pragma once
 #include "Platform\Platform.h"
 
-namespace DXRPG
+namespace DXRPG::Engine
 {
-	namespace Engine
+	Common::Common()
 	{
-		Common::Common(HINSTANCE hInstance)
+	}
+
+	Common::Common(HINSTANCE hInstance): paused(false)
 		{
 			this->fps = 0.0f;
 			this->window = new Window(hInstance, "Renderer Window");
+<<<<<<< HEAD
 			this->input = new Input();
 
 			this->renderer = new DXRPG::Engine::Renderer::OpenGLRenderer();
 			this->camera = new DXRPG::Engine::Renderer::OrthographicCamera(this->window);
 
+=======
+			this->renderer = new Renderer::OpenGLRenderer();
+			this->camera = new Renderer::OrthographicCamera(this->window);
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 		}
 
 		Common::~Common()
@@ -39,17 +46,23 @@ namespace DXRPG
 			if (!renderer->Initialize(*this->window))
 				return false;
 
+<<<<<<< HEAD
 			SetWindowLongPtr(this->Get_Window()->GetHWND(), GWLP_USERDATA, (long long)this);
 
 			this->shader = new DXRPG::Engine::Renderer::OpenGLShader();
 			this->shader->Compile("Assets/Shader/simple.frag", "Assets/Shader/simple.vert", "");
+=======
+			this->shader = new Renderer::OpenGLShader();
+			this->shader->Compile("Assets/Shader/simple.frag",
+				"Assets/Shader/simple.vert", "");
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 
 			return true;
 		}
 
 		bool Common::Start()
 		{
-			ShowWindow(this->window->GetHWND(), 1);
+			ShowWindow(this->window->GetHwnd(), 1);
 			_GameLoop();
 			return true;
 		}
@@ -108,7 +121,7 @@ namespace DXRPG
 			return false;
 		}
 
-		bool Common::Update(float dt)
+		bool Common::Update(float dt) const
 		{
 			this->camera->Update(this->Get_Window());
 			return true;
@@ -155,15 +168,15 @@ namespace DXRPG
 
 			if (elapsed >= 1.0f)
 			{
-				fps = (float)frameCnt;
+				fps = static_cast<float>(frameCnt);
 				elapsed = 0.0f;
 				frameCnt = 0;
 			}
 		}
 
-		void Common::Shutdown()
+		void Common::Shutdown() const
 		{
-			renderer->Shutdown(this->window->GetHWND());
+			renderer->Shutdown(this->window->GetHwnd());
 			window->Shutdown();
 		}
 
@@ -172,12 +185,12 @@ namespace DXRPG
 			MSG msg = { 0 };
 
 			__int64 prevTIme = 0;
-			QueryPerformanceCounter((LARGE_INTEGER*)&prevTIme);
+			QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&prevTIme));
 
 			__int64 countsPerSec = 0;
-			QueryPerformanceFrequency((LARGE_INTEGER*)&countsPerSec);
+			QueryPerformanceFrequency(reinterpret_cast<LARGE_INTEGER*>(&countsPerSec));
 
-			float secoundsperCount = 1.0f / countsPerSec;
+			const auto secoundsperCount = 1.0f / static_cast<float>(countsPerSec);
 
 			float vertices[] = {
 				-0.5f, -0.5f, 0.0f,
@@ -186,13 +199,19 @@ namespace DXRPG
 				-0.5f,  0.5f, 0.0f
 			};
 
+<<<<<<< HEAD
 			auto vb = new DXRPG::Engine::Renderer::OpenGLVertexBuffer();
 			vb->SetData(vertices, sizeof(vertices));
+=======
+			auto vb = new Renderer::OpenGLVertexBuffer();
+			vb->SetData(vertices, 3 * 4 * sizeof(float));
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 
 			uint32_t indices[] = { 0, 1, 2, 2, 3, 0 };
-			auto ib = new DXRPG::Engine::Renderer::OpenGLIndexBuffer();
+			auto ib = new Renderer::OpenGLIndexBuffer();
 			ib->SetData(indices, sizeof(indices));
 
+<<<<<<< HEAD
 			auto vla = new DXRPG::Engine::Renderer::VertexBufferLayout();
 
 
@@ -200,15 +219,26 @@ namespace DXRPG
 			// x,x,x = 3
 
 			vla->Push(3, false);
+=======
+			auto vla = new Renderer::VertexBufferLayout();
+			vla->Push(4, false);
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 
-			auto va = new DXRPG::Engine::Renderer::OpenGLVertexArray(ib);
+			auto va = new Renderer::OpenGLVertexArray(ib);
 			va->AddBuffer(*vb, *vla);
 
+<<<<<<< HEAD
 			glm::vec4 color = glm::vec4(camera->GetPosition()->x, camera->GetPosition()->y, camera->GetPosition()->z, 1.0f);
+=======
+			const glm::vec4 color = glm::vec4(1.0f);
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 
+			World world;
+			world.Generate();
+		
 			while (WM_QUIT != msg.message)
 			{
-				if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
+				if (PeekMessage(&msg, nullptr, NULL, NULL, PM_REMOVE))
 				{
 					TranslateMessage(&msg);
 					DispatchMessage(&msg);
@@ -216,8 +246,8 @@ namespace DXRPG
 				else
 				{
 					__int64 curTIme = 0;
-					QueryPerformanceCounter((LARGE_INTEGER*)&curTIme);
-					float deltaTime = (curTIme - prevTIme) * secoundsperCount;
+					QueryPerformanceCounter(reinterpret_cast<LARGE_INTEGER*>(&curTIme));
+					const float deltaTime = secoundsperCount * (curTIme - prevTIme);
 					this->Event();
 
 					if (!paused)
@@ -251,5 +281,4 @@ namespace DXRPG
 
 			Shutdown();
 		}
-	}
 }

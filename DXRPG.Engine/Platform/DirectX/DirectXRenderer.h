@@ -17,16 +17,16 @@ namespace DXRPG
 				DirectXRenderer();
 				virtual ~DirectXRenderer();
 
-				virtual bool Initialize(const Window& window);
-				virtual void Begin_Render();
-				virtual void Render();
-				virtual void End_Render();
+				bool Initialize(const Window& window) override;
+				void Begin_Render() override;
+				void Render() override;
+				void End_Render() override;
 				virtual void Shutdown();
 
-				virtual void SetViewport(const float& x, const float& y,
-					const float& width, const float& height);
+				void SetViewport(const float& x, const float& y,
+					const float& width, const float& height) override;
 
-				virtual void EnableBlend();
+				void EnableBlend() override;
 			};
 		}
 	}

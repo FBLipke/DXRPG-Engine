@@ -1,11 +1,7 @@
 #include <Platform/Platform.h>
 
-namespace DXRPG
+namespace DXRPG::Engine::Renderer
 {
-	namespace Engine
-	{
-		namespace Renderer
-		{
 			OpenGLIndexBuffer::OpenGLIndexBuffer()
 			{
 				glGenBuffers(1, &this->id);
@@ -16,7 +12,7 @@ namespace DXRPG
 				if (this->id == 0)
 					return;
 
-				UnBind();
+				OpenGLIndexBuffer::UnBind();
 				glDeleteBuffers(1, &this->id);
 			}
 
@@ -48,6 +44,4 @@ namespace DXRPG
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 				this->isBound = false;
 			}
-		}
-	}
 }

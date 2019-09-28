@@ -60,7 +60,20 @@
     <ClCompile Include="Platform\OpenGL\OpenGLIndexBuffer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Platform\Input.cpp">
+=======
+    <ClCompile Include="Platform\Common\World\World.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\Common\World\Map\Map.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\Common\World\Map\Layer\Layer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\Common\World\Map\Layer\Tile.cpp">
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,7 +150,20 @@
     <ClInclude Include="Platform\OpenGL\OpenGLIndexBuffer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Platform\Input.h">
+=======
+    <ClInclude Include="Platform\Common\World\World.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Common\World\Map\Map.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Common\World\Map\Layer\Layer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Common\World\Map\Layer\Tile.h">
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,18 +1,14 @@
 #include <Platform/Platform.h>
 
-namespace DXRPG
+namespace DXRPG::Engine::Renderer
 {
-	namespace Engine
-	{
-		namespace Renderer
-		{
-			OrthographicCamera::OrthographicCamera(Window * w)
+			OrthographicCamera::OrthographicCamera(Window * w): model(1.0f)
 			{
 				this->position = glm::vec3(0.0f, 0.0f, 1.0f);
 				this->view = glm::mat4(1.0f);
 
 				this->proj = glm::ortho(1.0f, w->Get_FrameBufferWidth(),
-					w->Get_FrameBufferHeight(), 1.0f, -1.0f, 10.0f);
+				                        w->Get_FrameBufferHeight(), 1.0f, -1.0f, 10.0f);
 
 				projView = proj * view;
 			}
@@ -40,10 +36,10 @@ namespace DXRPG
 
 			void OrthographicCamera::Update(Window * w)
 			{
-				glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-					glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1, 0, 0));
+				const glm::mat4 transform = translate(glm::mat4(1.0f), position) *
+					rotate(glm::mat4(1.0f), 0.0f, glm::vec3(1, 0, 0));
 
-				view = glm::inverse(transform);
+				view = inverse(transform);
 
 				projView = proj * view;
 			}
@@ -52,6 +48,4 @@ namespace DXRPG
 			{
 				return this->projView;
 			}
-		}
-	}
 }

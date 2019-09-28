@@ -5,28 +5,28 @@ namespace DXRPG
 {
 	namespace Engine
 	{
-		class Window
+		class __DLLEXPORT Window
 		{
 		public:
-			Window() {};
+			Window();
 			Window(HINSTANCE hInstance, const std::string& title);
 			~Window();
 			bool Inititalize();
-			void Shutdown();
+			void Shutdown() const;
 			LRESULT MsgProc(HWND& hwnd, UINT& msg, WPARAM& wParam, LPARAM& lParam);
 
-			float Get_FrameBufferWidth() const;
-			float Get_FrameBufferHeight() const;
+			auto Get_FrameBufferWidth() const -> float;
+			auto Get_FrameBufferHeight() const -> float;
 
-			WindowState GetWindowState() const;
+			enum WindowState GetWindowState() const;
 			void SetWindowState(const WindowState& state);
-			HWND GetHWND() const;
+			HWND GetHwnd() const;
 		private:
 			void __GetWindowSize();
 			void __GetKeyboardInput(int key);
 			HINSTANCE hInstance;
 			DWORD windowStyle;
-			WindowState Windowstate;
+			WindowState windowState;
 			HWND hwnd;
 			WNDCLASSEX wcEx;
 			RECT r;
@@ -34,8 +34,6 @@ namespace DXRPG
 			LONG height;
 			LONG fbWidth;
 			LONG fbHeight;
-
-
 
 			std::string title;
 		};

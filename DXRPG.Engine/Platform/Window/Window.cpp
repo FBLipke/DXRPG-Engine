@@ -1,12 +1,10 @@
 #include <Platform/Platform.h>
 
-namespace DXRPG
+namespace DXRPG::Engine
 {
-	namespace Engine
-	{
 		namespace
 		{
-			Engine::Window* _instance = nullptr;
+			Window* _instance = nullptr;
 		}
 
 		void Window::__GetWindowSize()
@@ -27,6 +25,7 @@ namespace DXRPG
 
 		void Window::__GetKeyboardInput(int key)
 		{
+<<<<<<< HEAD
 			if (this == nullptr)
 				return;
 
@@ -36,6 +35,9 @@ namespace DXRPG
 		LRESULT Window::MsgProc(HWND& hwnd, UINT& msg, WPARAM& wParam, LPARAM& lParam)
 		{
 			Common* cm = reinterpret_cast<Common*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+=======
+			auto cm = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 			switch (msg)
 			{
 			case WM_SIZING:
@@ -100,22 +102,26 @@ namespace DXRPG
 			}
 		}
 
-		HWND Window::GetHWND() const
+		HWND Window::GetHwnd() const
 		{
 			return hwnd;
 		}
 
 		WindowState Window::GetWindowState() const
 		{
-			return this->Windowstate;
+			return this->windowState;
 		}
 
 		void Window::SetWindowState(const WindowState& state)
 		{
+<<<<<<< HEAD
 			if (this == nullptr)
 				return;
 
 			this->Windowstate = state;
+=======
+			this->windowState = state;
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 		}
 
 		float Window::Get_FrameBufferWidth() const
@@ -133,21 +139,29 @@ namespace DXRPG
 			return _instance->MsgProc(hwnd, msg, wParam, lParam);
 		}
 
-		Window::Window(HINSTANCE hInstance, const std::string& title)
+		Window::Window(): hInstance(nullptr), windowStyle(0), windowState(), hwnd(nullptr), wcEx(), r(), width(0),
+		                  height(0), fbWidth(0),
+		                  fbHeight(0)
 		{
+<<<<<<< HEAD
+=======
+		}
+
+		Window::Window(HINSTANCE hInstance, const std::string& title): wcEx(), fbWidth(0), fbHeight(0)
+		{
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 			this->hInstance = hInstance;
 			this->title = title;
 			this->hwnd = nullptr;
-			this->Windowstate = NoState;
+			this->windowState = NoState;
 			this->width = 1280;
 			this->height = 800;
-			this->r = { 0, 0, width, height };
+			this->r = {0, 0, width, height};
 			this->windowStyle = WS_OVERLAPPEDWINDOW | WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX;
 		}
 
 		Window::~Window()
-		{
-		}
+		= default;
 
 		bool Window::Inititalize()
 		{
@@ -159,11 +173,10 @@ namespace DXRPG
 			wcEx.hInstance = this->hInstance;
 			wcEx.lpfnWndProc = MainWndProc;
 
-			wcEx.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-			wcEx.hCursor = LoadCursor(NULL, IDC_ARROW);
-			wcEx.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+			wcEx.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+			wcEx.hCursor = LoadCursor(nullptr, IDC_ARROW);
+			wcEx.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
 			wcEx.lpszClassName = "COMMONCLASS";
-			wcEx.lpszMenuName = "IDR_MENU1";
 			wcEx.hIconSm = wcEx.hIcon;
 
 			if (!RegisterClassEx(&wcEx))
@@ -174,15 +187,19 @@ namespace DXRPG
 				fbWidth = r.right - r.left;
 				fbHeight = r.bottom - r.top;
 
-				int x = GetSystemMetrics(SM_CXSCREEN / 2 - fbWidth / 2);
-				int y = GetSystemMetrics(SM_CYSCREEN / 2 - fbHeight / 2);
+				const auto x = GetSystemMetrics(SM_CXSCREEN / 2 - fbWidth / 2);
+				const auto y = GetSystemMetrics(SM_CYSCREEN / 2 - fbHeight / 2);
 
 				hwnd = CreateWindow(wcEx.lpszClassName, this->title.c_str(), this->windowStyle,
 					x, y, fbWidth, fbHeight, NULL, NULL, hInstance, NULL);
 
 				if (!hwnd) return OutErrorMsg("Failed to create Window");
 
+<<<<<<< HEAD
 				//
+=======
+				SetWindowLongPtr(this->hwnd, GWLP_USERDATA, reinterpret_cast<long long>(this));
+>>>>>>> b29d8ef3ed95859e24539b60c248b8afab8981cc
 
 				return true;
 			}
@@ -190,11 +207,9 @@ namespace DXRPG
 			return false;
 		}
 
-		void Window::Shutdown()
+		void Window::Shutdown() const
 		{
-			DestroyWindow(GetHWND());
+			DestroyWindow(GetHwnd());
 			UnregisterClass(wcEx.lpszClassName, hInstance);
 		}
-	}
-
 }

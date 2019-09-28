@@ -38,6 +38,10 @@
 #include "OpenGL/OpenGLVertexArray.h"
 #include "DirectX/DirectXRenderer.h"
 #include "OrthographicCamera.h"
+#include <Platform/Common/World/Map/Layer/Tile.h>
+#include <Platform/Common/World/Map/Layer/Layer.h>
+#include <Platform/Common/World/Map/Map.h>
+#include "Common/World/World.h"
 
 #include "../Common.h"
 
